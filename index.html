@@ -1,0 +1,1463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Master Digital Intelligence · Dominar a Inteligência Digital</title>
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --bg-2: #12121a;
+    --fg: #f5f3ee;
+    --muted: #8b8a85;
+    --accent: #d97757;
+    --accent-2: #f0b48a;
+    --line: rgba(245, 243, 238, 0.08);
+    --line-strong: rgba(245, 243, 238, 0.18);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    width: 100%; height: 100%;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    font-feature-settings: "ss01", "cv11";
+    overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(1200px 800px at 10% 10%, rgba(217, 119, 87, 0.10), transparent 50%),
+      radial-gradient(900px 700px at 90% 80%, rgba(217, 119, 87, 0.06), transparent 50%),
+      radial-gradient(700px 500px at 50% 50%, rgba(240, 180, 138, 0.04), transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+    animation: drift 20s ease-in-out infinite alternate;
+  }
+
+  @keyframes drift {
+    from { transform: scale(1) translateY(0); }
+    to { transform: scale(1.1) translateY(-20px); }
+  }
+
+  .deck { position: relative; width: 100vw; height: 100vh; z-index: 1; }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: clamp(28px, 4vw, 70px) clamp(40px, 9vw, 140px) clamp(56px, 5vw, 90px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.6s ease;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  .slide::-webkit-scrollbar { width: 4px; }
+  .slide::-webkit-scrollbar-track { background: transparent; }
+  .slide::-webkit-scrollbar-thumb { background: var(--line-strong); border-radius: 2px; }
+
+  .slide.active { opacity: 1; pointer-events: auto; }
+
+  .eyebrow {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.28em;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .eyebrow::after {
+    content: '';
+    flex: 0 0 70px;
+    height: 1px;
+    background: var(--accent);
+    opacity: 0.6;
+  }
+  .eyebrow.center { justify-content: center; }
+  .eyebrow.center::after { display: none; }
+  .eyebrow.center::before {
+    content: '';
+    flex: 0 0 70px;
+    height: 1px;
+    background: var(--accent);
+    opacity: 0.6;
+  }
+
+  h1 {
+    font-size: clamp(44px, 7.5vw, 120px);
+    font-weight: 800;
+    line-height: 0.98;
+    letter-spacing: -0.035em;
+    margin-bottom: 24px;
+  }
+
+  h2 {
+    font-size: clamp(34px, 5vw, 72px);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    margin-bottom: 28px;
+  }
+
+  .lead {
+    font-size: clamp(18px, 1.9vw, 30px);
+    line-height: 1.45;
+    font-weight: 400;
+    max-width: 1100px;
+    color: var(--fg);
+  }
+
+  .lead.large {
+    font-size: clamp(26px, 3.4vw, 48px);
+    font-weight: 500;
+    line-height: 1.25;
+    letter-spacing: -0.015em;
+  }
+
+  .lead .accent { color: var(--accent); font-weight: 600; }
+  .lead em { font-style: italic; color: var(--accent-2); font-weight: 500; }
+
+  .subtitle {
+    font-size: clamp(18px, 1.6vw, 26px);
+    color: var(--muted);
+    font-weight: 400;
+    line-height: 1.5;
+    max-width: 900px;
+  }
+
+  .pull {
+    border-left: 3px solid var(--accent);
+    padding: 10px 0 10px 28px;
+    color: var(--muted);
+    font-size: clamp(18px, 1.5vw, 24px);
+    margin-top: 32px;
+    font-style: italic;
+    line-height: 1.5;
+    max-width: 900px;
+  }
+
+  /* Title slide — the centerpiece */
+  .title-slide {
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+  }
+  .title-slide .word {
+    display: block;
+    font-size: clamp(48px, 10vw, 170px);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+  }
+  .title-slide .word.fade {
+    background: linear-gradient(135deg, #f5f3ee 0%, #d97757 60%, #f0b48a 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .title-slide .subtitle {
+    margin-top: 60px;
+    font-size: clamp(20px, 2vw, 32px);
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    color: var(--muted);
+  }
+  .title-slide .meta {
+    margin-top: 40px;
+    color: var(--muted);
+    font-size: 13px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  /* Hero number slides */
+  .hero-number {
+    font-size: clamp(160px, 26vw, 380px);
+    font-weight: 800;
+    letter-spacing: -0.06em;
+    line-height: 0.85;
+    background: linear-gradient(180deg, var(--accent) 0%, var(--accent-2) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-variant-numeric: tabular-nums;
+    margin: 20px 0;
+  }
+
+  .hero-caption {
+    font-size: clamp(22px, 2.4vw, 36px);
+    color: var(--fg);
+    line-height: 1.3;
+    max-width: 900px;
+  }
+  .hero-caption .accent { color: var(--accent); font-weight: 600; }
+
+  /* Stats grid */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    margin-top: 50px;
+  }
+  .stat {
+    border-top: 1px solid var(--line-strong);
+    padding-top: 24px;
+  }
+  .stat .num {
+    font-size: clamp(54px, 6vw, 96px);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 12px;
+    font-variant-numeric: tabular-nums;
+  }
+  .stat .label {
+    font-size: 14px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    line-height: 1.3;
+  }
+
+  /* Pillars (3-column big text) */
+  .pillars {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 50px;
+    margin-top: 50px;
+  }
+  .pillar {
+    border-top: 2px solid var(--accent);
+    padding-top: 28px;
+  }
+  .pillar .name {
+    font-size: clamp(28px, 3vw, 44px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    margin-bottom: 16px;
+  }
+  .pillar .desc {
+    color: var(--muted);
+    font-size: 17px;
+    line-height: 1.5;
+  }
+
+  /* People stack */
+  .people {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 40px;
+  }
+  .person {
+    border: 1px solid var(--line-strong);
+    padding: 14px 24px;
+    border-radius: 100px;
+    font-size: clamp(15px, 1.3vw, 19px);
+    font-weight: 500;
+    color: var(--fg);
+    background: rgba(255, 255, 255, 0.02);
+    transition: all 0.3s;
+  }
+  .person.highlight {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(217, 119, 87, 0.08);
+  }
+  .person.dept {
+    color: var(--muted);
+    border-color: var(--line);
+  }
+
+  /* Two-column moat */
+  .moat {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    margin-top: 40px;
+    align-items: start;
+  }
+  .moat h3 {
+    font-size: clamp(20px, 1.8vw, 28px);
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+  .moat ul {
+    list-style: none;
+  }
+  .moat ul li {
+    font-size: clamp(20px, 2vw, 30px);
+    padding: 16px 0;
+    border-bottom: 1px solid var(--line);
+    line-height: 1.3;
+    font-weight: 500;
+  }
+  .moat ul li::before {
+    content: '— ';
+    color: var(--accent);
+    margin-right: 8px;
+  }
+
+  /* Versus card */
+  .versus {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 40px;
+    align-items: center;
+    margin-top: 40px;
+  }
+  .versus-side {
+    border: 1px solid var(--line-strong);
+    border-radius: 12px;
+    padding: 36px;
+    background: rgba(255, 255, 255, 0.02);
+  }
+  .versus-side.now {
+    border-color: var(--accent);
+    background: rgba(217, 119, 87, 0.06);
+  }
+  .versus-side .when {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+  .versus-side .what {
+    font-size: clamp(20px, 2vw, 30px);
+    font-weight: 600;
+    line-height: 1.25;
+  }
+  .versus-arrow {
+    font-size: 40px;
+    color: var(--accent);
+    font-weight: 300;
+  }
+
+  /* Chart slide — image fills the slide */
+  .chart-slide {
+    padding: clamp(16px, 2vw, 28px) clamp(24px, 4vw, 70px);
+    justify-content: flex-start;
+    gap: clamp(12px, 1.4vw, 20px);
+  }
+  .chart-header { flex: 0 0 auto; }
+  .chart-wrap {
+    flex: 1 1 auto;
+    border: 1px solid var(--line-strong);
+    border-radius: 12px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 0;
+  }
+  .chart-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background: #fff;
+  }
+  .chart-stats {
+    flex: 0 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: clamp(16px, 2vw, 32px);
+  }
+  .cs {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    border-top: 1px solid var(--line-strong);
+    padding-top: clamp(8px, 1vw, 14px);
+  }
+  .cs-num {
+    font-size: clamp(22px, 2.2vw, 34px);
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+  .cs-label {
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+  }
+
+  /* Dev grid */
+  .dev-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    margin-top: 16px;
+  }
+  .dev-card {
+    border: 1px solid var(--line-strong);
+    border-radius: 10px;
+    padding: 22px 20px;
+    background: rgba(255, 255, 255, 0.02);
+    transition: border-color 0.3s, transform 0.3s, background 0.3s;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .dev-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-3px);
+    background: rgba(217, 119, 87, 0.05);
+  }
+  .dev-card .dev-name {
+    font-size: clamp(18px, 1.5vw, 22px);
+    font-weight: 700;
+    color: var(--fg);
+    letter-spacing: -0.01em;
+  }
+  .dev-card .dev-role {
+    font-size: 11px;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-weight: 600;
+  }
+  .dev-card .dev-feat {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.45;
+    margin-top: 4px;
+  }
+
+  /* Before / After list */
+  .ba-list {
+    margin-top: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .ba-row {
+    display: grid;
+    grid-template-columns: 1fr auto 1.4fr;
+    gap: 24px;
+    align-items: center;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--line);
+    font-size: clamp(14px, 1.2vw, 18px);
+  }
+  .ba-row:last-child { border-bottom: none; }
+  .ba-before {
+    color: var(--muted);
+    text-align: right;
+    font-style: italic;
+  }
+  .ba-arrow {
+    color: var(--accent);
+    font-weight: 600;
+    font-size: 1.2em;
+  }
+  .ba-after {
+    color: var(--fg);
+    font-weight: 500;
+  }
+  .ba-by {
+    color: var(--accent-2);
+    font-weight: 400;
+    font-size: 0.9em;
+    margin-left: 8px;
+    white-space: nowrap;
+  }
+
+  /* Solo grid — what I built */
+  .solo-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 28px;
+  }
+  .solo-card {
+    border: 1px solid var(--line-strong);
+    border-radius: 10px;
+    padding: 22px 20px;
+    background: rgba(255, 255, 255, 0.02);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: all 0.3s;
+  }
+  .solo-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-3px);
+    background: rgba(217, 119, 87, 0.05);
+  }
+  .solo-card.highlight {
+    border-color: var(--accent);
+    background: linear-gradient(180deg, rgba(217, 119, 87, 0.1), rgba(217, 119, 87, 0.02));
+  }
+  .solo-card.wide {
+    grid-column: span 2;
+    border-color: var(--accent);
+    background: linear-gradient(135deg, rgba(217, 119, 87, 0.08), rgba(217, 119, 87, 0.02));
+  }
+  .solo-card.wide .solo-name {
+    font-size: clamp(18px, 1.6vw, 24px);
+  }
+  .solo-card .solo-tag {
+    font-size: 10px;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-weight: 600;
+  }
+  .solo-card .solo-name {
+    font-size: clamp(15px, 1.3vw, 19px);
+    font-weight: 700;
+    color: var(--fg);
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+  }
+  .solo-card .solo-meta {
+    font-size: 11px;
+    color: var(--accent-2);
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+  }
+  .solo-card .solo-desc {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+    margin-top: 4px;
+  }
+  .solo-card code {
+    font-family: 'JetBrains Mono', 'Menlo', monospace;
+    font-size: 0.9em;
+    color: var(--accent-2);
+    background: rgba(217, 119, 87, 0.12);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+
+  /* Bug list */
+  .bug-list {
+    margin-top: 32px;
+    display: flex;
+    flex-direction: column;
+  }
+  .bug-row {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr auto;
+    gap: 24px;
+    align-items: baseline;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .bug-row:last-child { border-bottom: none; }
+  .bug-name {
+    font-size: clamp(20px, 2vw, 30px);
+    font-weight: 600;
+    color: var(--fg);
+    letter-spacing: -0.01em;
+  }
+  .bug-name::before {
+    content: '✕';
+    color: var(--accent);
+    margin-right: 14px;
+    font-weight: 400;
+    font-size: 0.9em;
+  }
+  .bug-loc {
+    font-size: 12px;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-weight: 600;
+  }
+  .bug-by {
+    font-size: clamp(14px, 1.2vw, 18px);
+    color: var(--accent-2);
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  /* Section divider */
+  .section-divider {
+    align-items: flex-start;
+    justify-content: center;
+  }
+  .section-divider .section-num {
+    font-size: 14px;
+    color: var(--accent);
+    letter-spacing: 0.3em;
+    margin-bottom: 32px;
+    font-weight: 600;
+  }
+
+  /* Animations */
+  .slide.active * { animation-fill-mode: backwards; }
+  .slide.active h1 { animation: fadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1); }
+  .slide.active h2 { animation: fadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1); }
+  .slide.active .lead, .slide.active .subtitle, .slide.active .pull { animation: fadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.15s; }
+  .slide.active .stats, .slide.active .pillars, .slide.active .moat, .slide.active .versus, .slide.active .people { animation: fadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.25s; }
+  .slide.active .hero-number { animation: scaleIn 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s; }
+  .slide.active .hero-caption { animation: fadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.5s; }
+  .slide.active .word:nth-child(1) { animation: fadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1); }
+  .slide.active .word:nth-child(2) { animation: fadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.2s; }
+  .slide.active .word:nth-child(3) { animation: fadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.4s; }
+  .slide.active .title-slide-subtitle { animation: fadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.7s; }
+
+  .slide.active .stat:nth-child(1) { animation: fadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.3s; }
+  .slide.active .stat:nth-child(2) { animation: fadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.4s; }
+  .slide.active .stat:nth-child(3) { animation: fadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.5s; }
+
+  .slide.active .pillar:nth-child(1) { animation: fadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.3s; }
+  .slide.active .pillar:nth-child(2) { animation: fadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.45s; }
+  .slide.active .pillar:nth-child(3) { animation: fadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.6s; }
+  .slide.active .pillar { animation-fill-mode: backwards; }
+
+  .slide.active .dev-card { animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) backwards; }
+  .slide.active .dev-card:nth-child(1) { animation-delay: 0.25s; }
+  .slide.active .dev-card:nth-child(2) { animation-delay: 0.30s; }
+  .slide.active .dev-card:nth-child(3) { animation-delay: 0.35s; }
+  .slide.active .dev-card:nth-child(4) { animation-delay: 0.40s; }
+  .slide.active .dev-card:nth-child(5) { animation-delay: 0.45s; }
+  .slide.active .dev-card:nth-child(6) { animation-delay: 0.50s; }
+  .slide.active .dev-card:nth-child(7) { animation-delay: 0.55s; }
+  .slide.active .dev-card:nth-child(8) { animation-delay: 0.60s; }
+
+  .slide.active .solo-card { animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) backwards; }
+  .slide.active .solo-card:nth-child(1) { animation-delay: 0.25s; }
+  .slide.active .solo-card:nth-child(2) { animation-delay: 0.32s; }
+  .slide.active .solo-card:nth-child(3) { animation-delay: 0.39s; }
+  .slide.active .solo-card:nth-child(4) { animation-delay: 0.46s; }
+  .slide.active .solo-card:nth-child(5) { animation-delay: 0.53s; }
+  .slide.active .solo-card:nth-child(6) { animation-delay: 0.60s; }
+
+  .slide.active .bug-row { animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) backwards; }
+  .slide.active .bug-row:nth-child(1) { animation-delay: 0.30s; }
+  .slide.active .bug-row:nth-child(2) { animation-delay: 0.40s; }
+  .slide.active .bug-row:nth-child(3) { animation-delay: 0.50s; }
+  .slide.active .bug-row:nth-child(4) { animation-delay: 0.60s; }
+  .slide.active .bug-row:nth-child(5) { animation-delay: 0.70s; }
+
+  .slide.active .ba-row { animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) backwards; }
+  .slide.active .ba-row:nth-child(1) { animation-delay: 0.25s; }
+  .slide.active .ba-row:nth-child(2) { animation-delay: 0.32s; }
+  .slide.active .ba-row:nth-child(3) { animation-delay: 0.39s; }
+  .slide.active .ba-row:nth-child(4) { animation-delay: 0.46s; }
+  .slide.active .ba-row:nth-child(5) { animation-delay: 0.53s; }
+  .slide.active .ba-row:nth-child(6) { animation-delay: 0.60s; }
+  .slide.active .ba-row:nth-child(7) { animation-delay: 0.67s; }
+  .slide.active .ba-row:nth-child(8) { animation-delay: 0.74s; }
+
+  .slide.active .person { animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) backwards; }
+  .slide.active .person:nth-child(1) { animation-delay: 0.30s; }
+  .slide.active .person:nth-child(2) { animation-delay: 0.35s; }
+  .slide.active .person:nth-child(3) { animation-delay: 0.40s; }
+  .slide.active .person:nth-child(4) { animation-delay: 0.45s; }
+  .slide.active .person:nth-child(5) { animation-delay: 0.50s; }
+  .slide.active .person:nth-child(6) { animation-delay: 0.55s; }
+  .slide.active .person:nth-child(7) { animation-delay: 0.60s; }
+  .slide.active .person:nth-child(8) { animation-delay: 0.65s; }
+  .slide.active .person:nth-child(9) { animation-delay: 0.70s; }
+  .slide.active .person:nth-child(10) { animation-delay: 0.75s; }
+  .slide.active .person:nth-child(11) { animation-delay: 0.80s; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes scaleIn {
+    from { opacity: 0; transform: scale(0.85); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  /* Chrome */
+  .chrome {
+    position: fixed;
+    bottom: 24px;
+    left: 0; right: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 32px;
+    z-index: 100;
+    pointer-events: none;
+  }
+  .chrome > * { pointer-events: auto; }
+  .progress {
+    flex: 1;
+    height: 2px;
+    background: var(--line);
+    margin: 0 24px;
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    width: 0%;
+    transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .counter {
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+    text-transform: uppercase;
+    min-width: 80px;
+  }
+  .nav-btn {
+    background: transparent;
+    border: 1px solid var(--line-strong);
+    color: var(--fg);
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    font-size: 18px;
+  }
+  .nav-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+  .brand {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+  }
+  .brand .dot {
+    display: inline-block;
+    width: 6px; height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    margin-right: 10px;
+    vertical-align: middle;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.3); }
+  }
+
+  /* Language toggle */
+  .lang-toggle {
+    display: inline-flex;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--line-strong);
+    border-radius: 100px;
+    padding: 3px;
+    margin-right: 12px;
+    overflow: hidden;
+  }
+  .lang-toggle button {
+    background: transparent;
+    border: none;
+    color: var(--muted);
+    padding: 5px 12px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 100px;
+    transition: all 0.2s;
+    font-family: inherit;
+  }
+  .lang-toggle button:hover { color: var(--fg); }
+  .lang-toggle button.active {
+    background: var(--accent);
+    color: #fff;
+  }
+
+  /* Help overlay */
+  .help {
+    position: fixed;
+    bottom: 80px;
+    right: 32px;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    z-index: 50;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+  }
+  .help.visible { opacity: 1; }
+  .help kbd {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--line-strong);
+    border-radius: 4px;
+    padding: 2px 6px;
+    margin: 0 2px;
+    font-family: inherit;
+    font-size: 10px;
+  }
+
+  @media (max-width: 1100px) {
+    .solo-grid { grid-template-columns: repeat(2, 1fr); }
+    .solo-card.wide { grid-column: span 2; }
+  }
+  @media (max-width: 1200px) {
+    .dev-grid { grid-template-columns: repeat(3, 1fr); }
+    .chart-stats { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  }
+  @media (max-width: 900px) {
+    .stats, .pillars { grid-template-columns: 1fr; gap: 24px; }
+    .moat { grid-template-columns: 1fr; gap: 32px; }
+    .versus { grid-template-columns: 1fr; }
+    .versus-arrow { transform: rotate(90deg); }
+    .dev-grid { grid-template-columns: repeat(2, 1fr); }
+    .ba-row { grid-template-columns: 1fr; gap: 4px; text-align: left; }
+    .ba-before { text-align: left; }
+    .ba-arrow { display: none; }
+    .bug-row { grid-template-columns: 1fr; gap: 6px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="deck" id="deck">
+
+<!-- 1. Title — bookend -->
+<section class="slide title-slide active">
+  <div>
+    <span class="word" data-pt="DOMINAR">MASTER</span>
+    <span class="word fade" data-pt="A INTELIGÊNCIA">DIGITAL</span>
+    <span class="word" data-pt="DIGITAL">INTELLIGENCE</span>
+    <p class="subtitle title-slide-subtitle" data-pt="Um olhar de 21 minutos sobre os últimos 2 meses">A 21-minute look at the last 2 months</p>
+    <p class="meta">Bruno · 2026-04-29</p>
+  </div>
+</section>
+
+<!-- 2. The moment -->
+<section class="slide">
+  <div class="eyebrow" data-pt="O momento em que estamos">The moment we're in</div>
+  <p class="lead large" data-pt="Há dois meses, a IA era <em>uma ferramenta que experimentámos</em>.<br>Hoje, é <span class=&quot;accent&quot;>como entregamos</span>.">
+    Two months ago, AI was <em>a tool we tried</em>.<br>
+    Today, it's <span class="accent">how we ship</span>.
+  </p>
+  <p class="pull" data-pt="Isto não é uma apresentação para programadores. É sobre o que acabou de mudar para toda a empresa.">
+    This isn't a developer talk. It's about what just changed for the entire company.
+  </p>
+</section>
+
+<!-- 3. Before / After -->
+<section class="slide">
+  <div class="eyebrow" data-pt="Em dois meses">In two months</div>
+  <h2 data-pt="O que não existia entrega agora todos os dias.">What didn't exist now ships every day.</h2>
+  <div class="versus">
+    <div class="versus-side">
+      <div class="when" data-pt="Há dois meses">Two months ago</div>
+      <div class="what" data-pt="<span style=&quot;color: var(--accent); font-weight: 700;&quot;>5</span> encomendas / dia no eSIMpass.<br><span style=&quot;color: var(--muted); font-size: 0.85em;&quot;>Quase inteiramente pagas pelo Google Ads.</span>"><span style="color: var(--accent); font-weight: 700;">5</span> orders / day at eSIMpass.<br><span style="color: var(--muted); font-size: 0.85em;">Almost entirely paid for by Google Ads.</span></div>
+    </div>
+    <div class="versus-arrow">→</div>
+    <div class="versus-side now">
+      <div class="when" data-pt="Meta atingida · 26 Abr">Goal hit · April 26</div>
+      <div class="what" data-pt="<span style=&quot;color: var(--accent); font-weight: 700;&quot;>100+</span> encomendas num dia.<br><span style=&quot;color: var(--accent-2); font-size: 0.85em;&quot;>~95% orgânico. E o verão ainda nem começou.</span>"><span style="color: var(--accent); font-weight: 700;">100+</span> orders in a day.<br><span style="color: var(--accent-2); font-size: 0.85em;">~95% organic. And summer hasn't started.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. The 100/day milestone -->
+<section class="slide">
+  <div class="eyebrow center" style="text-align: center;" data-pt="O slide que conta">The slide that matters</div>
+  <div style="text-align: center;">
+    <div style="font-size: 14px; color: var(--accent); letter-spacing: 0.25em; text-transform: uppercase; font-weight: 600; margin-bottom: 12px;" data-pt="Meta atingida · 26 Abril">Goal hit · April 26</div>
+    <div class="hero-number">100</div>
+    <p class="hero-caption" data-pt="<span class=&quot;accent&quot;>encomendas num dia no eSIMpass.</span><br><span style=&quot;color: var(--muted);&quot;>De 5/dia há dois meses — quase tudo orgânico agora.</span><br><span style=&quot;color: var(--accent-2); font-size: 0.8em; display: inline-block; margin-top: 20px; font-weight: 600;&quot;>Em Julho, esperamos 300/dia. Naturalmente.</span>">
+      <span class="accent">orders in a day at eSIMpass.</span><br>
+      <span style="color: var(--muted);">From 5/day two months ago — almost all organic now.</span><br>
+      <span style="color: var(--accent-2); font-size: 0.8em; display: inline-block; margin-top: 20px; font-weight: 600;">By July, we expect 300/day. Naturally.</span>
+    </p>
+  </div>
+</section>
+
+<!-- 4b. The chart — proof, full bleed -->
+<section class="slide chart-slide">
+  <div class="chart-header">
+    <div class="eyebrow" style="margin-bottom: 6px;" data-pt="O recibo · últimos 90 dias">The receipt · last 90 days</div>
+    <h2 style="font-size: clamp(26px, 2.8vw, 40px); margin-bottom: 0;" data-pt="95% orgânico. <span style=&quot;color: var(--accent);&quot;>5,4% em anúncios.</span>">95% organic. <span style="color: var(--accent);">5.4% ad spend.</span></h2>
+  </div>
+  <div class="chart-wrap">
+    <img src="esimpass-evolution.png" alt="eSIMpass daily revenue evolution — 90 days" class="chart-img">
+  </div>
+  <div class="chart-stats">
+    <div class="cs"><span class="cs-num">5 → 105</span><span class="cs-label" data-pt="Encomendas/dia, pico 26 Abr">Daily orders, peak Apr 26</span></div>
+    <div class="cs"><span class="cs-num">1,875</span><span class="cs-label" data-pt="Encomendas · 90 dias">Orders · 90 days</span></div>
+    <div class="cs"><span class="cs-num">18.5×</span><span class="cs-label" data-pt="ROAS · 5,4% em anúncios">ROAS · 5.4% ad spend</span></div>
+    <div class="cs"><span class="cs-num" data-pt="300/dia">300/day</span><span class="cs-label" data-pt="Previsão para Julho">July forecast</span></div>
+  </div>
+</section>
+
+<!-- 4c. Soft pitch — make it personal -->
+<section class="slide title-slide">
+  <div>
+    <div class="eyebrow center" data-pt="PS · para a sala">PS · for the room</div>
+    <h1 style="font-size: clamp(48px, 7vw, 100px); line-height: 1.0;" data-pt="Vais viajar?">Travelling soon?</h1>
+    <p class="subtitle" style="margin-top: 36px; max-width: 800px; text-transform: none; letter-spacing: normal; font-size: clamp(20px, 1.8vw, 28px); color: var(--fg); line-height: 1.4;" data-pt="<span style=&quot;color: var(--accent); font-weight: 600;&quot;>eSIMpass</span> tem os melhores preços de roaming em 200+ países.<br><span style=&quot;color: var(--muted);&quot;>Feito por nós. Testado por nós. Usa-o.</span>">
+      <span style="color: var(--accent); font-weight: 600;">eSIMpass</span> has the best roaming prices in 200+ countries.<br>
+      <span style="color: var(--muted);">Built by us. Tested by us. Use it.</span>
+    </p>
+  </div>
+</section>
+
+<!-- 5. What I built — single-handed (framed as proof, not flex) -->
+<section class="slide">
+  <div class="eyebrow" data-pt="Porque sei que isto funciona">Why I know this works</div>
+  <h2 data-pt="Testei primeiro em mim.">I tried it on myself first.</h2>
+  <div class="solo-grid">
+    <div class="solo-card wide">
+      <div class="solo-tag" data-pt="Reformulado + novas operações">Overhauled + new ops</div>
+      <div class="solo-name" data-pt="eSIMpass · site principal + operações Fenix">eSIMpass · main site + Fenix ops</div>
+      <div class="solo-meta" data-pt="<span style=&quot;color: var(--accent); font-size: 1.15em; font-weight: 700;&quot;>70% do meu tempo</span> · 575 commits · 51 dias activos"><span style="color: var(--accent); font-size: 1.15em; font-weight: 700;">70% of my time</span> · 575 commits · 51 active days</div>
+      <div class="solo-desc" data-pt="<b>Site principal:</b> pagamentos reconstruídos (Stripe, PayPal, OpenNode, NOWPayments). Pipeline de tradução para 121 idiomas. O combate à crise de produção em Abril. SEO que transformou um negócio dependente de anúncios num negócio <span style=&quot;color: var(--accent); font-weight: 600;&quot;>95% orgânico</span>.<br><br><b>Operações internas Fenix:</b> de <code>create-next-app</code> a produção no Cloud Run em 11 dias. GMC, GSC, BI, Outreach a Clientes, monitor sintético do checkout — Microsoft SSO, Turso, Mailjet."><b>Main site:</b> payments rebuilt (Stripe, PayPal, OpenNode, NOWPayments). 121-locale translation pipeline. The April production firefight. SEO that flipped a paid-ads business into a <span style="color: var(--accent); font-weight: 600;">95%-organic one</span>.<br><br><b>Fenix internal ops:</b> <code>create-next-app</code> to production-on-Cloud-Run in 11 days. GMC, GSC, BI, Customer Outreach, synthetic checkout monitor — Microsoft SSO, Turso, Mailjet.</div>
+    </div>
+    <div class="solo-card">
+      <div class="solo-tag" data-pt="Novo frontend">New frontend</div>
+      <div class="solo-name">portugalinternet.com</div>
+      <div class="solo-meta" data-pt="Next.js novo · pronto para testar">Brand-new Next.js · ready to test</div>
+      <div class="solo-desc" data-pt="Fluxo de reserva, modo calendário, lógica de multi-SIM, integração total com o Magento, paridade de pagamentos com o site antigo. <span style=&quot;color: var(--accent); font-weight: 600;&quot;>Pronto para testar.</span>">Booking flow, calendar mode, multi-SIM logic, full Magento integration, payment parity with the legacy site. <span style="color: var(--accent); font-weight: 600;">Ready to test.</span></div>
+    </div>
+    <div class="solo-card">
+      <div class="solo-tag" data-pt="Do zero">From zero</div>
+      <div class="solo-name" data-pt="Ads · centro de comando do Google Ads">Ads · Google Ads command center</div>
+      <div class="solo-meta" data-pt="111 commits · 2 semanas">111 commits · 2 weeks</div>
+      <div class="solo-desc" data-pt="19 páginas em cima do catálogo Magento e da API do Google Ads. Modulação de tROAS, restrições, page feed, criativos — construído do zero.">19 pages on top of the Magento catalog and Google Ads API. tROAS modulation, restrictions, page feed, creatives — built from scratch.</div>
+    </div>
+    <div class="solo-card">
+      <div class="solo-tag" data-pt="Grande expansão">Major expansion</div>
+      <div class="solo-name" data-pt="Pulse · BI interno">Pulse · internal BI</div>
+      <div class="solo-meta">130 commits · 17 PRs</div>
+      <div class="solo-desc" data-pt="Whale VIP, Atribuição de Tráfego, Pricing Intelligence, módulo de Produtos. Sincronização Magento reescrita com bulk upserts e inserts paralelos.">Whale VIP, Traffic Attribution, Pricing Intelligence, Products module. Magento sync rewritten with bulk upserts and parallel inserts.</div>
+    </div>
+    <div class="solo-card highlight">
+      <div class="solo-tag" data-pt="Estudei as fundações">Studied the foundation</div>
+      <div class="solo-name">caretobeauty.com</div>
+      <div class="solo-meta" data-pt="22 commits · só documentação">22 commits · all documentation</div>
+      <div class="solo-desc" data-pt="Li <em>10 anos</em> de código — <span style=&quot;color: var(--accent-2);&quot;>17.710 commits</span> percorridos para criar contexto. A conclusão: <span style=&quot;color: var(--accent); font-weight: 600;&quot;>tenho orgulho na infraestrutura que esta equipa construiu.</span> Fundação excelente. Resultado: <code>CLAUDE.md</code> ao nível do projecto e dos módulos, referência do esquema da base de dados, referência de stores/línguas/moedas, dicionário de dados, auditoria SEO completa. Para que cada colega — e cada IA — aceda ao mesmo contexto que eu acedi.">Read <em>10 years</em> of code — <span style="color: var(--accent-2);">17,710 commits</span> scanned for context. The takeaway: <span style="color: var(--accent); font-weight: 600;">I'm proud of the infrastructure this team has built.</span> Excellent foundation. Result: top-level + module-level <code>CLAUDE.md</code>, database schema reference, store/locale/currency reference, data dictionary, full SEO audit. So every teammate — and every AI — taps into the same context I did.</div>
+    </div>
+  </div>
+  <p class="pull" style="margin-top: 32px;" data-pt="Cinco produtos em dois meses — <em>não porque seja especial, mas porque a alavancagem é real.</em><br>E o contexto que deixámos preparado faz com que <span style=&quot;color: var(--accent); font-weight: 600;&quot;>qualquer IA — hoje ou para o ano — possa entrar no nosso código rapidamente.</span> A mesma alavancagem está em cada portátil desta sala.">
+    Five products in two months — <em>not because I'm special, but because the leverage is real.</em><br>
+    And the context we've baked in means <span style="color: var(--accent); font-weight: 600;">any AI — today or next year — can pick our codebase up fast.</span> The same leverage is sitting on every laptop in this room.
+  </p>
+</section>
+
+<!-- 6. Sara — credit -->
+<section class="slide">
+  <div class="eyebrow" data-pt="Como começou">How it started</div>
+  <p class="lead large" data-pt="Nada disto acontece sem a <span class=&quot;accent&quot;>Sara</span>.">
+    None of this happens without <span class="accent">Sara</span>.
+  </p>
+  <p class="lead" style="margin-top: 32px;" data-pt="Empurrou a empresa a adoptar o Claude quando ninguém tinha a certeza que iria pegar. <em>Pegou.</em>">
+    She pushed the company to adopt Claude when nobody was sure it would stick. <em>It stuck.</em>
+  </p>
+  <p class="pull" data-pt="Uma lembrança de que a convicção de uma só pessoa pode puxar uma empresa inteira para a frente.">
+    A reminder that conviction from one person can pull an entire company forward.
+  </p>
+</section>
+
+<!-- 7. Everyone is on it -->
+<section class="slide">
+  <div class="eyebrow" data-pt="A empresa toda">The whole company</div>
+  <h2 data-pt="Não é só a engenharia.">Not just engineering.</h2>
+  <div class="people">
+    <div class="person dept">Marketing</div>
+    <div class="person dept" data-pt="Apoio ao Cliente">Customer Support</div>
+    <div class="person dept" data-pt="Logística">Logistics</div>
+    <div class="person dept" data-pt="Compras">Purchasing</div>
+    <div class="person dept" data-pt="Conteúdo">Content</div>
+    <div class="person dept">IT</div>
+    <div class="person highlight" data-pt="Todos usam o Claude">Everyone is using Claude</div>
+  </div>
+  <p class="pull" style="margin-top: 50px;" data-pt="Temos uma equipa de <em>programadores</em> que se encontram no git. Mas agora, <span style=&quot;color: var(--accent); font-weight: 600;&quot;>estamos todos a construir funcionalidades.</span>">
+    We have a team of <em>developers</em> you'll find on git. But now, <span style="color: var(--accent); font-weight: 600;">we are all building features.</span>
+  </p>
+</section>
+
+<!-- 7b. The dev team — names + features -->
+<section class="slide">
+  <div class="eyebrow" data-pt="A equipa por trás do código">The team behind the code</div>
+  <h2 data-pt="Pessoas reais. Funcionalidades reais.">Real people. Real features.</h2>
+  <p class="subtitle" style="margin-bottom: 36px;" data-pt="Uma amostra do que saiu nos últimos 2 meses no caretobeauty.com e no portugalinternet — por nome.">A snapshot of what landed in the last 2 months on caretobeauty.com and portugalinternet — by name.</p>
+  <div class="dev-grid">
+    <div class="dev-card">
+      <div class="dev-name">Ricardo Velhote</div>
+      <div class="dev-role" data-pt="Tech lead · 98 commits">Tech lead · 98 commits</div>
+      <div class="dev-feat" data-pt="Upgrade do SDK PayPal · ChatKit · endpoints CTT &amp; EMS · totais de landed-cost">PayPal SDK upgrade · ChatKit · CTT &amp; EMS endpoints · landed-cost totals</div>
+    </div>
+    <div class="dev-card">
+      <div class="dev-name">Pedro Savi</div>
+      <div class="dev-role" data-pt="Frontend · 41 commits">Frontend · 41 commits</div>
+      <div class="dev-feat" data-pt="Templates banner-hero · AccentFrame fadeshow · ribbons de preço de referência">Banner-hero templates · AccentFrame fadeshow · reference price ribbons</div>
+    </div>
+    <div class="dev-card">
+      <div class="dev-name">André Silva</div>
+      <div class="dev-role" data-pt="Performance · 79 commits">Performance · 79 commits</div>
+      <div class="dev-feat" data-pt="Cache ISR em Redis · recuperação de ligação Stripe · agente HTTPS partilhado · profiling Sentry">Redis ISR cache · Stripe connection recovery · shared HTTPS agent · Sentry profiling</div>
+    </div>
+    <div class="dev-card">
+      <div class="dev-name">João Ricardo</div>
+      <div class="dev-role" data-pt="Catálogo · 16 commits">Catalog · 16 commits</div>
+      <div class="dev-feat" data-pt="Módulo Catalog Rating · correcção do cron de regras de categoria · UX de produtos descontinuados">Catalog Rating module · category-rules cron fix · discontinued-product UX</div>
+    </div>
+    <div class="dev-card">
+      <div class="dev-name">Luan Coelho</div>
+      <div class="dev-role" data-pt="Integrações · 28 commits">Integrations · 28 commits</div>
+      <div class="dev-feat" data-pt="Módulo de integração Klaviyo · correcção de morada no checkout · rotação de visibilidade de promos">Klaviyo Integration module · checkout address fix · promo visibility rotation</div>
+    </div>
+    <div class="dev-card">
+      <div class="dev-name">Carlos Soratto</div>
+      <div class="dev-role" data-pt="Marketplaces · 9 commits">Marketplaces · 9 commits</div>
+      <div class="dev-feat" data-pt="Listagens Temu · encomendas Amazon via M2ePro · curadoria de categorias Typesense">Temu listings · M2ePro Amazon orders · Typesense category curation</div>
+    </div>
+    <div class="dev-card">
+      <div class="dev-name">Moisés</div>
+      <div class="dev-role" data-pt="Logística · 6 commits">Logistics · 6 commits</div>
+      <div class="dev-feat" data-pt="Advisory locks no picking · datas de validade na recepção · segurança no update de stock">Picking advisory locks · reception expiration dates · stock-update safety</div>
+    </div>
+    <div class="dev-card">
+      <div class="dev-name">Sara Sousa</div>
+      <div class="dev-role" data-pt="Pulse · contribuidora">Pulse · contributor</div>
+      <div class="dev-feat" data-pt="Tab de Price Review · campanhas &amp; actualizações de preço · a faísca por trás de tudo isto">Price Review tab · campaigns &amp; pricing updates · the spark behind all of this</div>
+    </div>
+  </div>
+</section>
+
+<!-- 7b2. Team output comparison — the only honest quantitative claim -->
+<section class="slide">
+  <div class="eyebrow" data-pt="A prova de toda a equipa">The team-wide proof</div>
+  <h2 data-pt="A produção mais que <span style=&quot;color: var(--accent);&quot;>duplicou.</span>">Output more than <span style="color: var(--accent);">doubled.</span></h2>
+  <div class="versus">
+    <div class="versus-side">
+      <div class="when" data-pt="Há dois meses">Two months ago</div>
+      <div class="what" data-pt="<span style=&quot;font-size: 1.4em; color: var(--muted); display: block; margin-bottom: 8px;&quot;>2</span>repos com desenvolvimento activo<br><br><span style=&quot;font-size: 1.4em; color: var(--muted); display: block; margin: 12px 0 8px;&quot;>104</span>PRs feitos merge (total da equipa)"><span style="font-size: 1.4em; color: var(--muted); display: block; margin-bottom: 8px;">2</span>repos with active development<br><br><span style="font-size: 1.4em; color: var(--muted); display: block; margin: 12px 0 8px;">104</span>merged PRs (team total)</div>
+    </div>
+    <div class="versus-arrow">→</div>
+    <div class="versus-side now">
+      <div class="when" data-pt="Hoje">Today</div>
+      <div class="what" data-pt="<span style=&quot;font-size: 1.4em; color: var(--accent); display: block; margin-bottom: 8px;&quot;>5</span>repos a entregar em paralelo<br><br><span style=&quot;font-size: 1.4em; color: var(--accent); display: block; margin: 12px 0 8px;&quot;>219</span>PRs com merge <span style=&quot;color: var(--accent-2); font-size: 0.7em;&quot;>+110%</span>"><span style="font-size: 1.4em; color: var(--accent); display: block; margin-bottom: 8px;">5</span>repos shipping in parallel<br><br><span style="font-size: 1.4em; color: var(--accent); display: block; margin: 12px 0 8px;">219</span>merged PRs <span style="color: var(--accent-2); font-size: 0.7em;">+110%</span></div>
+    </div>
+  </div>
+  <p class="pull" data-pt="Três produtos novos — ads, fenix, pulse — do zero até produção enquanto o site antigo continuou a funcionar.">Three brand-new product surfaces — ads, fenix, pulse — from zero to production while the legacy site kept running.</p>
+</section>
+
+<!-- 7c. Before / After — concrete deploys -->
+<section class="slide">
+  <div class="eyebrow" data-pt="Antes / Depois">Before / After</div>
+  <h2 data-pt="O que entregámos enquanto aprendíamos.">What shipped while we were learning.</h2>
+  <div class="ba-list">
+    <div class="ba-row">
+      <div class="ba-before" data-pt="eSIMpass: 5 encomendas/dia em anúncios pagos">eSIMpass: 5 orders/day on paid ads</div>
+      <div class="ba-arrow">→</div>
+      <div class="ba-after" data-pt="100 encomendas / dia, ~90% orgânico <span class=&quot;ba-by&quot;>— Bruno · André · Luan</span>">100 orders / day, ~90% organic <span class="ba-by">— Bruno · André · Luan</span></div>
+    </div>
+    <div class="ba-row">
+      <div class="ba-before" data-pt="PayPal: SDK antigo, frágil">PayPal: legacy SDK, brittle</div>
+      <div class="ba-arrow">→</div>
+      <div class="ba-after" data-pt="SDK mais recente, checkout estável <span class=&quot;ba-by&quot;>— Ricardo</span>">Latest SDK, stable checkout <span class="ba-by">— Ricardo</span></div>
+    </div>
+    <div class="ba-row">
+      <div class="ba-before" data-pt="Sem módulo de reviews de clientes">No customer reviews module</div>
+      <div class="ba-arrow">→</div>
+      <div class="ba-after" data-pt="Catalog Rating em produção <span class=&quot;ba-by&quot;>— João</span>">Catalog Rating shipped to production <span class="ba-by">— João</span></div>
+    </div>
+    <div class="ba-row">
+      <div class="ba-before" data-pt="Email marketing: manual">Email marketing: manual</div>
+      <div class="ba-arrow">→</div>
+      <div class="ba-after" data-pt="Integração Klaviyo activa <span class=&quot;ba-by&quot;>— Luan</span>">Klaviyo integration live <span class="ba-by">— Luan</span></div>
+    </div>
+    <div class="ba-row">
+      <div class="ba-before" data-pt="Banners: layouts rígidos">Banners: rigid layouts</div>
+      <div class="ba-arrow">→</div>
+      <div class="ba-after" data-pt="Banner-hero + AccentFrame fadeshow <span class=&quot;ba-by&quot;>— Pedro</span>">Banner-hero + AccentFrame fadeshow <span class="ba-by">— Pedro</span></div>
+    </div>
+    <div class="ba-row">
+      <div class="ba-before" data-pt="Cache PI: filesystem (lento, frágil)">PI cache: filesystem (slow, fragile)</div>
+      <div class="ba-arrow">→</div>
+      <div class="ba-after" data-pt="ISR em Redis (rápido, escalável) <span class=&quot;ba-by&quot;>— André</span>">Redis ISR (fast, scalable) <span class="ba-by">— André</span></div>
+    </div>
+    <div class="ba-row">
+      <div class="ba-before" data-pt="Marketplace: só Amazon">Marketplace: Amazon only</div>
+      <div class="ba-arrow">→</div>
+      <div class="ba-after" data-pt="Listagens Temu + correcções M2ePro <span class=&quot;ba-by&quot;>— Carlos</span>">Temu listings + M2ePro fixes <span class="ba-by">— Carlos</span></div>
+    </div>
+    <div class="ba-row">
+      <div class="ba-before" data-pt="Recepção: race conditions">Reception: race conditions</div>
+      <div class="ba-arrow">→</div>
+      <div class="ba-after" data-pt="Advisory locks, sem stock duplicado <span class=&quot;ba-by&quot;>— Moisés</span>">Advisory locks, no duplicate stock <span class="ba-by">— Moisés</span></div>
+    </div>
+  </div>
+  <p class="pull" data-pt="Cada nome desta lista está a entregar mais depressa <em>com</em> Claude do que entregava <em>sem</em>.">Every name on this list is shipping faster <em>with</em> Claude than they did <em>without</em> it.</p>
+</section>
+
+<!-- 12a. Setup — the wins are qualitative -->
+<section class="slide">
+  <div class="eyebrow" data-pt="No site antigo">On the legacy site</div>
+  <p class="lead large" data-pt="Os números estão estáveis.<br>Mas o <span class=&quot;accent&quot;>tipo de trabalho</span> mudou.">
+    The numbers are flat.<br>
+    But the <span class="accent">kind of work</span> changed.
+  </p>
+  <p class="lead" style="margin-top: 32px; color: var(--muted);" data-pt="Três coisas mudaram no caretobeauty.com que não aparecem numa contagem de commits.">
+    Three things shifted on caretobeauty.com that don't show up in a commit count.
+  </p>
+</section>
+
+<!-- 12b. The SEO ghost — the dramatic moment -->
+<section class="slide section-divider">
+  <div style="max-width: 1200px;">
+    <div class="section-num" data-pt="— O FANTASMA —">— THE GHOST —</div>
+    <h1 style="font-size: clamp(40px, 6.5vw, 100px); line-height: 1.0;" data-pt="Os nomes dos produtos<br><span style=&quot;color: var(--accent);&quot;>nunca</span> foram traduzidos.">Product names<br>were <span style="color: var(--accent);">never</span> translated.</h1>
+    <p class="lead" style="margin-top: 40px;" data-pt="Num site que vende cosméticos em <span style=&quot;color: var(--accent-2); font-weight: 600;&quot;>60+ países</span>.<br>Durante <em>anos.</em>">
+      On a site selling cosmetics in <span style="color: var(--accent-2); font-weight: 600;">60+ countries</span>.<br>
+      For <em>years.</em>
+    </p>
+    <p class="lead" style="margin-top: 20px; color: var(--muted);" data-pt="A prejudicar a nossa visibilidade na pesquisa todos os dias. E eu nem sabia.">
+      Hurting our search visibility every single day. And I didn't even know.
+    </p>
+    <p class="pull" style="margin-top: 36px; border-left-color: var(--accent);" data-pt="<span style=&quot;color: var(--accent); font-weight: 600;&quot;>Agora estão.</span> A inteligência digital encontrou o que nós não víamos.">
+      <span style="color: var(--accent); font-weight: 600;">Now they are.</span> Digital intelligence found what we couldn't see.
+    </p>
+  </div>
+</section>
+
+<!-- 12c. Bugs that lived for years — concrete -->
+<section class="slide">
+  <div class="eyebrow" data-pt="Bugs que viveram durante anos">Bugs that lived for years</div>
+  <h2 data-pt="Finalmente resolvidos.">Finally fixed.</h2>
+  <div class="bug-list">
+    <div class="bug-row"><div class="bug-name" data-pt="Race condition no picking">Picking race condition</div><div class="bug-loc" data-pt="Armazém">Warehouse</div><div class="bug-by">— Moisés</div></div>
+    <div class="bug-row"><div class="bug-name" data-pt="Crash em encomendas Amazon (M2ePro)">M2ePro Amazon order crash</div><div class="bug-loc">Marketplaces</div><div class="bug-by">— Carlos</div></div>
+    <div class="bug-row"><div class="bug-name" data-pt="UX de produtos descontinuados">Discontinued-product UX</div><div class="bug-loc" data-pt="Catálogo">Catalog</div><div class="bug-by">— João</div></div>
+    <div class="bug-row"><div class="bug-name" data-pt="Resolução de morada no checkout">Checkout address resolver</div><div class="bug-loc">Checkout</div><div class="bug-by">— Luan</div></div>
+    <div class="bug-row"><div class="bug-name" data-pt="Cálculo de descontos em campanhas">Campaign discount calculation</div><div class="bug-loc" data-pt="Promo">Promo</div><div class="bug-by">— Luan</div></div>
+  </div>
+  <p class="pull" data-pt="Cada um custava-nos dinheiro ou confiança antes. Nenhum o faz hoje.">Each one cost us money or trust before. None of them do today.</p>
+</section>
+
+<!-- 12d. Confidence is the signal -->
+<section class="slide">
+  <div class="eyebrow" data-pt="O sinal mais profundo">The deeper signal</div>
+  <h2 style="margin-bottom: 20px;" data-pt="A confiança subiu.">Confidence went up.</h2>
+  <div style="display: flex; align-items: baseline; gap: 32px; margin: 32px 0; flex-wrap: wrap;">
+    <span style="font-size: clamp(64px, 9vw, 130px); font-weight: 800; color: var(--muted); letter-spacing: -0.04em; line-height: 0.9; font-variant-numeric: tabular-nums;">220</span>
+    <span style="font-size: clamp(32px, 3.5vw, 52px); color: var(--accent); font-weight: 300;">→</span>
+    <span style="font-size: clamp(64px, 9vw, 130px); font-weight: 800; letter-spacing: -0.04em; line-height: 0.9; background: linear-gradient(180deg, var(--accent), var(--accent-2)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; font-variant-numeric: tabular-nums;">460</span>
+    <span style="font-size: clamp(16px, 1.4vw, 22px); color: var(--muted); text-transform: uppercase; letter-spacing: 0.18em;" data-pt="linhas<br>por commit">lines<br>per commit</span>
+  </div>
+  <p class="lead" data-pt="Menos commits triviais. Funcionalidades mais substanciais.<br>Reviews mais rápidas. Rollbacks mais raros.">
+    Fewer trivial commits. More substantial features.<br>
+    Faster reviews. Rarer rollbacks.
+  </p>
+  <p class="pull" data-pt="A velocidade não é o único sinal. <em>A confiança é.</em>">
+    Speed isn't the only signal. <em>Confidence is.</em>
+  </p>
+</section>
+
+<!-- 8. Subscription model -->
+<section class="slide">
+  <div class="eyebrow" data-pt="Como pagamos">How we pay for it</div>
+  <h2 data-pt="Subscrição mensal. Pagamos pelo que usamos.">Monthly subscription. Pay as we use.</h2>
+  <p class="lead" data-pt="Sem amarras de vários anos. Sem facturas herdadas.<br>O custo escala com o trabalho — o valor também.">
+    No multi-year lock-in. No legacy bills.<br>
+    Costs scale with the work — so does the value.
+  </p>
+  <p class="pull" data-pt="Um modelo que nos deixa manter as opções abertas à medida que o terreno muda.">
+    A model that lets us keep our options open as the field moves.
+  </p>
+</section>
+
+<!-- 9. Claude is best NOW -->
+<section class="slide">
+  <div class="eyebrow" data-pt="Hoje">Today</div>
+  <p class="lead large" data-pt="O Claude é <span class=&quot;accent&quot;>a melhor IA</span> neste momento.">
+    Claude is <span class="accent">the best AI</span> right now.
+  </p>
+  <p class="lead" style="margin-top: 32px; color: var(--muted);" data-pt="A melhor para o nosso trabalho. Para o nosso contexto. Para a forma como gostamos de trabalhar.">
+    Best at our work. Best at our context. Best at the way we like to work.
+  </p>
+  <p class="pull" data-pt="Mas a palavra-chave é &quot;hoje&quot;.">
+    But "today" is the operative word.
+  </p>
+</section>
+
+<!-- 10. Tomorrow -->
+<section class="slide">
+  <div class="eyebrow" data-pt="No próximo mês">Next month</div>
+  <h2 data-pt="Pode ser outro.">Could be someone else.</h2>
+  <p class="lead" data-pt="Gemini. GPT. Um modelo de que ninguém ouviu falar ainda.<br>A fronteira mexe-se todos os trimestres.">
+    Gemini. GPT. A model nobody's heard of yet.<br>
+    The frontier moves every quarter.
+  </p>
+  <p class="pull" data-pt="Somos leais a <em>resultados</em>, não a <em>fornecedores</em>.">
+    We're loyal to <em>outcomes</em>, not <em>vendors</em>.
+  </p>
+</section>
+
+<!-- 11. Build to switch -->
+<section class="slide">
+  <div class="eyebrow" data-pt="Por isso construímos para trocar">So we build for switchability</div>
+  <h2 data-pt="A infraestrutura é o nosso fosso — não o modelo.">The infrastructure is the moat — not the model.</h2>
+  <p class="lead" data-pt="Uma abstracção limpa por cima de qualquer IA que seja a melhor este mês.<br>Troca-se o cérebro — mantém-se a cablagem.">
+    A clean abstraction over whatever AI is best this month.<br>
+    Swap the brain — keep the wiring.
+  </p>
+  <p class="pull" data-pt="Se precisarmos de mudar no próximo mês, <span style=&quot;color: var(--accent); font-weight: 600;&quot;>mudamos.</span>">
+    If we need to change next month, <span style="color: var(--accent); font-weight: 600;">we will.</span>
+  </p>
+</section>
+
+<!-- 12. Context is everything -->
+<section class="slide">
+  <div class="eyebrow" data-pt="A lição que vale a pena guardar">The lesson worth remembering</div>
+  <h2 style="font-size: clamp(56px, 9vw, 130px);" data-pt="O contexto é <span style=&quot;color: var(--accent);&quot;>tudo.</span>">Context is <span style="color: var(--accent);">everything.</span></h2>
+  <p class="lead" data-pt="Os modelos mudam todos os trimestres. O nosso contexto — o que sabemos dos nossos produtos, dos nossos clientes, dos nossos mercados — é para sempre.">
+    Models change every quarter. Our context — what we know about our products, our customers, our markets — is forever.
+  </p>
+  <p class="pull" data-pt="Quem tem o melhor contexto ganha. É esse o trabalho.">
+    Whoever has the best context wins. That's the work.
+  </p>
+</section>
+
+<!-- 13. What AI cannot do -->
+<section class="slide">
+  <div class="eyebrow" data-pt="A nossa verdadeira vantagem">Our real edge</div>
+  <h2 data-pt="O que a IA <em style=&quot;color: var(--accent); font-style: italic;&quot;>não</em> vai substituir.">What AI will <em style="color: var(--accent); font-style: italic;">not</em> replace.</h2>
+  <div class="moat">
+    <div>
+      <h3 data-pt="O que temos">What we have</h3>
+      <ul>
+        <li data-pt="Um armazém a sério">A real warehouse</li>
+        <li data-pt="15 anos de histórico de encomendas">15 years of order history</li>
+        <li data-pt="Clientes leais em 60+ países">Loyal customers in 60+ countries</li>
+        <li data-pt="Confiança ganha, ticket a ticket">Trust we've earned, ticket by ticket</li>
+      </ul>
+    </div>
+    <div>
+      <h3 data-pt="O que isto significa">What it means</h3>
+      <p class="lead" style="font-size: clamp(20px, 1.8vw, 28px);" data-pt="Um negócio real que a IA pode <em>amplificar</em> — não <em>replicar</em>.<br><br>A maior parte das startups de IA não tem nem uma coisa nem outra. Nós temos as duas.">
+        A real business AI can <em>amplify</em> — not <em>replicate</em>.<br><br>
+        Most AI startups have neither. We have both.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- 14. Find opportunities -->
+<section class="slide">
+  <div class="eyebrow" data-pt="Porque é que isto importa">Why this matters</div>
+  <p class="lead large" data-pt="A inteligência digital está cá para nos ajudar a<br><span class=&quot;accent&quot;>encontrar oportunidades</span> que de outra forma íamos perder.">
+    Digital intelligence is here to help us<br><span class="accent">find opportunities</span> we'd otherwise miss.
+  </p>
+  <p class="lead" style="margin-top: 32px; color: var(--muted);" data-pt="No nosso catálogo. Nos nossos clientes. Nos nossos preços. Nos nossos mercados.">
+    In our catalog. In our customers. In our pricing. In our markets.
+  </p>
+  <p class="pull" data-pt="O trabalho não é <em>usar</em> IA. O trabalho é <em>encontrar o que a IA nos deixa ver</em>.">
+    The job isn't to <em>use</em> AI. The job is to <em>find what AI lets us see</em>.
+  </p>
+</section>
+
+<!-- 14b. The unicorn target -->
+<section class="slide">
+  <div class="eyebrow" data-pt="O alvo">The target</div>
+  <div style="display: flex; align-items: baseline; gap: 32px; flex-wrap: wrap; margin-bottom: 24px;">
+    <span style="font-size: clamp(96px, 14vw, 200px); font-weight: 800; letter-spacing: -0.05em; line-height: 0.9; background: linear-gradient(180deg, var(--accent) 0%, var(--accent-2) 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; font-variant-numeric: tabular-nums;">10%</span>
+    <span style="font-size: clamp(28px, 3vw, 48px); font-weight: 600; color: var(--fg); line-height: 1.1;">EBITDA.</span>
+  </div>
+  <p class="lead" data-pt="Uma <span class=&quot;accent&quot;>margem de unicórnio</span> no e-commerce de cosméticos. A maior parte da nossa categoria vive nos 2–4%.">
+    A <span class="accent">unicorn margin</span> in cosmetics e-commerce. Most of our category lives on 2–4%.
+  </p>
+  <p class="lead" style="margin-top: 24px; color: var(--muted);" data-pt="Durante anos pareceu fora de alcance. Hoje, está mais próxima do que nunca.">
+    For years it felt out of reach. Today, it's the closest it has ever been.
+  </p>
+  <p class="pull" data-pt="A inteligência digital é como fechamos o intervalo.">
+    Digital Intelligence is how we close the gap.
+  </p>
+</section>
+
+<!-- 15. Three pillars -->
+<section class="slide">
+  <div class="eyebrow" data-pt="A nossa aposta">What we're betting on</div>
+  <h2 data-pt="Três princípios.">Three principles.</h2>
+  <div class="pillars">
+    <div class="pillar">
+      <div class="name" data-pt="O contexto ganha.">Context wins.</div>
+      <div class="desc" data-pt="Os repos com o melhor CLAUDE.md entregam mais depressa. Investimos em deixar as coisas escritas — para a IA, para nós, para quem vier a seguir.">The repos with the best CLAUDE.md ship faster. We invest in writing things down — for AI, for ourselves, for whoever joins next.</div>
+    </div>
+    <div class="pillar">
+      <div class="name" data-pt="Mantém a flexibilidade.">Stay flexible.</div>
+      <div class="desc" data-pt="O melhor modelo de hoje não é o melhor daqui a seis meses. O que compõe é a infraestrutura, não a marca na caixa.">Best model today is not best model in six months. The infrastructure is what compounds, not the brand on the box.</div>
+    </div>
+    <div class="pillar">
+      <div class="name" data-pt="O negócio real ganha.">Real business wins.</div>
+      <div class="desc" data-pt="Armazém, histórico, clientes, confiança — a IA não tem isto. Nós temos. É essa a vantagem injusta.">Warehouse, history, customers, trust — AI doesn't have these. We do. That's the unfair advantage.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 16. The call -->
+<section class="slide">
+  <div class="eyebrow center" style="text-align: center;" data-pt="O apelo">The call</div>
+  <div style="text-align: center;">
+    <h1 style="font-size: clamp(42px, 6vw, 92px);" data-pt="Não basta <em style=&quot;color: var(--accent); font-style: italic;&quot;>usá-la.</em>">Not just <em style="color: var(--accent); font-style: italic;">use it.</em></h1>
+    <h1 style="font-size: clamp(54px, 8vw, 120px); margin-top: 16px;" data-pt="Dominem-na.">Master it.</h1>
+  </div>
+  <p class="pull" style="margin: 60px auto 0; max-width: 800px; text-align: center; border-left: none; border-top: 1px solid var(--accent); padding: 24px 0 0;" data-pt="Tornem-na parte de como cada pessoa aqui trabalha — não uma experiência paralela.">
+    Make it part of how every person here works — not a side experiment.
+  </p>
+</section>
+
+<!-- 17. Title bookend -->
+<section class="slide title-slide">
+  <div>
+    <span class="word" data-pt="DOMINAR">MASTER</span>
+    <span class="word fade" data-pt="A INTELIGÊNCIA">DIGITAL</span>
+    <span class="word" data-pt="DIGITAL">INTELLIGENCE</span>
+    <p class="subtitle title-slide-subtitle" data-pt="Obrigado · Perguntas, contestações, ideias — tudo é bem-vindo">Thank you · Questions, pushback, ideas — all welcome</p>
+  </div>
+</section>
+
+</div>
+
+<!-- Help -->
+<div class="help" id="help" data-pt="<kbd>←</kbd> <kbd>→</kbd> navegar &nbsp;·&nbsp; <kbd>Espaço</kbd> seguinte &nbsp;·&nbsp; <kbd>F</kbd> ecrã inteiro">
+  <kbd>←</kbd> <kbd>→</kbd> navigate &nbsp;·&nbsp; <kbd>Space</kbd> next &nbsp;·&nbsp; <kbd>F</kbd> fullscreen
+</div>
+
+<!-- Chrome -->
+<div class="chrome">
+  <div class="brand"><span class="dot"></span><span data-pt="Dominar a Inteligência Digital">Master Digital Intelligence</span></div>
+  <div class="lang-toggle">
+    <button id="lang-en" class="active" aria-label="English">EN</button>
+    <button id="lang-pt" aria-label="Português">PT</button>
+  </div>
+  <button class="nav-btn" id="prev" aria-label="Previous">‹</button>
+  <div class="progress"><div class="progress-bar" id="bar"></div></div>
+  <button class="nav-btn" id="next" aria-label="Next">›</button>
+  <div class="counter" id="counter">01 / 27</div>
+</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+  const bar = document.getElementById('bar');
+  const counter = document.getElementById('counter');
+  const help = document.getElementById('help');
+  const prevBtn = document.getElementById('prev');
+  const nextBtn = document.getElementById('next');
+  let current = 0;
+  let helpTimeout;
+
+  function pad(n) { return String(n).padStart(2, '0'); }
+
+  function show(idx) {
+    if (idx < 0 || idx >= total) return;
+    slides.forEach((s, i) => s.classList.toggle('active', i === idx));
+    current = idx;
+    bar.style.width = ((idx + 1) / total * 100) + '%';
+    counter.textContent = pad(idx + 1) + ' / ' + pad(total);
+    prevBtn.disabled = idx === 0;
+    nextBtn.disabled = idx === total - 1;
+    history.replaceState(null, '', '#' + (idx + 1));
+  }
+
+  function next() { show(Math.min(current + 1, total - 1)); }
+  function prev() { show(Math.max(current - 1, 0)); }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); next(); }
+    else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); prev(); }
+    else if (e.key === 'Home') show(0);
+    else if (e.key === 'End') show(total - 1);
+    else if (e.key === 'f' || e.key === 'F') {
+      if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+      else document.exitFullscreen();
+    }
+    else if (/^[0-9]$/.test(e.key)) {
+      const n = parseInt(e.key);
+      if (n > 0 && n <= total) show(n - 1);
+    }
+  });
+
+  nextBtn.addEventListener('click', next);
+  prevBtn.addEventListener('click', prev);
+
+  document.getElementById('deck').addEventListener('click', (e) => {
+    if (e.target.tagName === 'BUTTON') return;
+    if (e.clientX > window.innerWidth / 2) next();
+    else prev();
+  });
+
+  let touchStart = 0;
+  document.addEventListener('touchstart', (e) => { touchStart = e.touches[0].clientX; });
+  document.addEventListener('touchend', (e) => {
+    const diff = touchStart - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) diff > 0 ? next() : prev();
+  });
+
+  document.addEventListener('mousemove', () => {
+    help.classList.add('visible');
+    clearTimeout(helpTimeout);
+    helpTimeout = setTimeout(() => help.classList.remove('visible'), 2500);
+  });
+
+  if (window.location.hash) {
+    const n = parseInt(window.location.hash.slice(1));
+    if (n > 0 && n <= total) show(n - 1);
+    else show(0);
+  } else {
+    show(0);
+  }
+
+  // ===== Language toggle =====
+  // First-pass: capture original English HTML for any element that has data-pt
+  document.querySelectorAll('[data-pt]').forEach(el => {
+    if (!el.dataset.en) el.dataset.en = el.innerHTML;
+  });
+
+  function setLang(lang) {
+    document.querySelectorAll('[data-pt]').forEach(el => {
+      el.innerHTML = lang === 'pt' ? el.dataset.pt : el.dataset.en;
+    });
+    document.body.dataset.lang = lang;
+    document.documentElement.lang = lang === 'pt' ? 'pt-PT' : 'en';
+    document.getElementById('lang-en').classList.toggle('active', lang === 'en');
+    document.getElementById('lang-pt').classList.toggle('active', lang === 'pt');
+    try { localStorage.setItem('lang', lang); } catch (e) {}
+  }
+
+  document.getElementById('lang-en').addEventListener('click', () => setLang('en'));
+  document.getElementById('lang-pt').addEventListener('click', () => setLang('pt'));
+
+  // Restore preference
+  try {
+    const saved = localStorage.getItem('lang');
+    if (saved === 'pt') setLang('pt');
+  } catch (e) {}
+</script>
+
+</body>
+</html>
