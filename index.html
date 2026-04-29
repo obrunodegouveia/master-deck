@@ -491,17 +491,17 @@
   .solo-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-    margin-top: 28px;
+    gap: 14px;
+    margin-top: 22px;
   }
   .solo-card {
     border: 1px solid var(--line-strong);
     border-radius: 10px;
-    padding: 22px 20px;
+    padding: 16px 18px;
     background: rgba(255, 255, 255, 0.02);
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
     transition: all 0.3s;
   }
   .solo-card:hover {
@@ -519,7 +519,29 @@
     background: linear-gradient(135deg, rgba(217, 119, 87, 0.08), rgba(217, 119, 87, 0.02));
   }
   .solo-card.wide .solo-name {
-    font-size: clamp(18px, 1.6vw, 24px);
+    font-size: clamp(15px, 1.4vw, 20px);
+  }
+
+  /* Horizontal footer banner under solo-grid (slide 7) */
+  .solo-footer {
+    margin-top: 22px;
+    padding: 14px 22px;
+    border-left: 3px solid var(--accent);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 24px;
+    align-items: baseline;
+    font-size: clamp(12px, 1vw, 15px);
+    line-height: 1.4;
+    color: var(--muted);
+    font-style: italic;
+  }
+  .solo-footer .sf-line { display: inline; }
+  .solo-footer .sf-line em { color: var(--accent-2); }
+  .solo-footer .sf-strong {
+    color: var(--fg);
+    font-style: normal;
+    font-weight: 600;
   }
   .solo-card .solo-tag {
     font-size: 10px;
@@ -529,23 +551,23 @@
     font-weight: 600;
   }
   .solo-card .solo-name {
-    font-size: clamp(15px, 1.3vw, 19px);
+    font-size: clamp(14px, 1.2vw, 17px);
     font-weight: 700;
     color: var(--fg);
     letter-spacing: -0.01em;
     line-height: 1.2;
   }
   .solo-card .solo-meta {
-    font-size: 11px;
+    font-size: 10.5px;
     color: var(--accent-2);
     font-weight: 500;
     font-variant-numeric: tabular-nums;
   }
   .solo-card .solo-desc {
-    font-size: 12px;
+    font-size: 11.5px;
     color: var(--muted);
-    line-height: 1.5;
-    margin-top: 4px;
+    line-height: 1.45;
+    margin-top: 2px;
   }
   .solo-card code {
     font-family: 'JetBrains Mono', 'Menlo', monospace;
@@ -960,10 +982,11 @@
       <div class="solo-desc" data-pt="Li <em>10 anos</em> de código — <span style=&quot;color: var(--accent-2);&quot;>17.710 commits</span> percorridos para criar contexto. A conclusão: <span style=&quot;color: var(--accent); font-weight: 600;&quot;>tenho orgulho na infraestrutura que esta equipa construiu.</span> Fundação excelente. Resultado: <code>CLAUDE.md</code> ao nível do projecto e dos módulos, referência do esquema da base de dados, referência de stores/línguas/moedas, dicionário de dados, auditoria SEO completa. Para que cada colega — e cada IA — aceda ao mesmo contexto que eu acedi.">Read <em>10 years</em> of code — <span style="color: var(--accent-2);">17,710 commits</span> scanned for context. The takeaway: <span style="color: var(--accent); font-weight: 600;">I'm proud of the infrastructure this team has built.</span> Excellent foundation. Result: top-level + module-level <code>CLAUDE.md</code>, database schema reference, store/locale/currency reference, data dictionary, full SEO audit. So every teammate — and every AI — taps into the same context I did.</div>
     </div>
   </div>
-  <p class="pull" style="margin-top: 32px;" data-pt="Cinco produtos em dois meses — <em>não porque seja especial, mas porque a alavancagem é real.</em><br>E o contexto que deixámos preparado faz com que <span style=&quot;color: var(--accent); font-weight: 600;&quot;>qualquer IA — hoje ou para o ano — possa entrar no nosso código rapidamente.</span> A mesma alavancagem está em cada portátil desta sala.">
-    Five products in two months — <em>not because I'm special, but because the leverage is real.</em><br>
-    And the context we've baked in means <span style="color: var(--accent); font-weight: 600;">any AI — today or next year — can pick our codebase up fast.</span> The same leverage is sitting on every laptop in this room.
-  </p>
+  <div class="solo-footer" data-pt="<span class=&quot;sf-line&quot;>Cinco produtos em dois meses — <em>não porque seja especial, mas porque a alavancagem é real.</em></span><span class=&quot;sf-line&quot;>O contexto que deixámos preparado faz com que <span style=&quot;color: var(--accent); font-weight: 600;&quot;>qualquer IA — hoje ou para o ano — entre no nosso código rapidamente.</span></span><span class=&quot;sf-line sf-strong&quot;>A mesma alavancagem está em cada portátil desta sala.</span>">
+    <span class="sf-line">Five products in two months — <em>not because I'm special, but because the leverage is real.</em></span>
+    <span class="sf-line">The context we've baked in means <span style="color: var(--accent); font-weight: 600;">any AI — today or next year — can pick our codebase up fast.</span></span>
+    <span class="sf-line sf-strong">The same leverage is sitting on every laptop in this room.</span>
+  </div>
 </section>
 
 <!-- 6. Sara — credit -->
